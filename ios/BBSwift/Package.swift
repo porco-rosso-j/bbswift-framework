@@ -17,11 +17,11 @@ let package = Package(
             name: "BBSwift",
             dependencies: ["BBSwiftFramework"],
             path: "Swift/Sources/BBSwift",
-            linkerSettings: [ .linkedFramework("SystemConfiguration") ],
+            linkerSettings: [ .linkedFramework("SystemConfiguration") ]
         ),
-       .binaryTarget(
+        .binaryTarget(
             name: "BBSwiftFramework",
-            url: "https://github.com/porco-rosso-j/react-native-bb.js/releases/download/v1.0.0/BBSwift.xcframework.zip",
+            url: "https://github.com/porco-rosso-j/react-native-bb.js/releases/download/v0.46.1/BBSwift.xcframework.zip",
             checksum: "e868c3f820d447ec9c8f50a306e4172eb026ed3b0c9639db1949cde8a43ed5c9"
         ),
         .testTarget(

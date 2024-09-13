@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
     #   'HEADER_SEARCH_PATHS' => '$(SRCROOT)/BBSwift/Swift/Sources/**',
     #   "LIBRARY_SEARCH_PATHS" => "$(SRCROOT)/BBSwift/Rust/target/aarch64-apple-ios/release",
     #  }
-    s.ios.deployment_target = "11.0"
+    s.ios.deployment_target = "12.0"
    
   end
   

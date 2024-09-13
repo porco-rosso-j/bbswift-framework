@@ -8,8 +8,7 @@
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(pedersenCommit
                                        : (NSArray<NSNumber *> *)inputs)
 
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(pedersenHash
-                                       : (NSArray<NSNumber *> *)inputs)
+RCT_EXTERN_METHOD(pedersenHash : (NSArray<NSNumber *> *)inputs)
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(poseidon2Hash
                                        : (NSArray<NSNumber *> *)inputs)

@@ -20,8 +20,7 @@ class BBSwiftModule: NSObject {
     print("BBSwiftModule initialized in swift")
   }
   
-  @objc
-  static func requiresMainQueueSetup() -> Bool {
+  func requiresMainQueueSetup() -> Bool {
     // Return `true` if your module initializes any UI components
     return false
   }
@@ -45,7 +44,7 @@ class BBSwiftModule: NSObject {
     return result.toArray()
   }
 
-  @objc
+
 func pedersenHash(_ inputs: [NSNumber]) -> [UInt8]? {
     let uint8Inputs = inputs.map { UInt8(truncating: $0) }
     guard !uint8Inputs.isEmpty else { return nil }
