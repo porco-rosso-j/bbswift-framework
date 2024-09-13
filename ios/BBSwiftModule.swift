@@ -15,6 +15,10 @@ extension RustVec where T == UInt8 {
 
 @objc(BBSwiftModule)
 class BBSwiftModule: NSObject {
+  override init() {
+    super.init()
+    print("BBSwiftModule initialized in swift")
+  }
   
   @objc
   static func requiresMainQueueSetup() -> Bool {

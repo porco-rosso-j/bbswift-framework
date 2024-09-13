@@ -15,7 +15,7 @@ const { BBSwift } = NativeModules;
 
 export class BarretenbergApiSync {
   pedersenCommit(inputsBuffer: Fr[]): Point {
-    const inArgs = inputsBuffer.map(serializeBufferable).flat();
+    const inArgs = inputsBuffer.map(serializeBufferable);
 
     const resultArray = BBSwift.pedersenCommit(inArgs);
 

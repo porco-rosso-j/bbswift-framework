@@ -1,4 +1,3 @@
-// @ts-ignore
 import { Fr, type GrumpkinScalar, Point } from '@aztec/foundation/fields';
 import { NativeModules } from 'react-native';
 const { BBSwift } = NativeModules;

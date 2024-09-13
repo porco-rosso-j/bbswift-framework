@@ -1,4 +1,5 @@
 import Foundation
+import SwoirenbergLib
 
 extension RustString {
     public func toString() -> String {

@@ -22,7 +22,7 @@ let package = Package(
        .binaryTarget(
             name: "BBSwiftFramework",
             url: "https://github.com/porco-rosso-j/react-native-bb.js/releases/download/v1.0.0/BBSwift.xcframework.zip",
-            checksum: "5803e1e175ec0afef74ba0c3a3c92955889a6d6a70dce2ca4d5d25b07a062d59"
+            checksum: "e868c3f820d447ec9c8f50a306e4172eb026ed3b0c9639db1949cde8a43ed5c9"
         ),
         .testTarget(
             name: "SwiftBridgeTest",

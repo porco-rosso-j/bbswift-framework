@@ -1,7 +1,5 @@
-// @ts-ignore
-import { type GrumpkinScalar, Point } from '@aztec/foundation/fields';
-// @ts-ignore
-import { numToUInt32BE } from '@aztec/foundation/serialize';
+
+import { type GrumpkinScalar } from '@aztec/foundation/fields';
 import { SchnorrSignature } from './signature.js';
 
 // TODO: eliminate foudnation dep and make PublicKey any?

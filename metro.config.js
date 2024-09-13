@@ -9,7 +9,8 @@ const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
 const config = {
   resolver: {
-    resolveRequest: require('./metro-resolver')
+    unstable_enablePackageExports: true
+    // resolveRequest: require('./metro-resolver')
   },
   transformer: {
     getTransformOptions: async () => ({
