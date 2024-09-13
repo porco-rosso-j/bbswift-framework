@@ -5,13 +5,14 @@ import BBSwift
 extension RustVec where T == UInt8 {
   func toArray() -> [UInt8] {
     var array = [UInt8]()
-    for index in 0..<self.len {
-      array.append(self.get(index))
+    for index in 0..<self.len() { // Use self.len() instead of self.len
+      if let element = self.get(index: UInt(index)) {
+        array.append(element)
+      }
     }
     return array
   }
 }
-
 
 @objc(BBSwiftModule)
 class BBSwiftModule: NSObject {
