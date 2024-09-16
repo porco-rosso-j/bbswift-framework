@@ -110,7 +110,6 @@ func optionalRustStrToRustStr<S: ToRustStr, T>(_ str: Optional<S>, _ withUnsafeR
         return withUnsafeRustStr(RustStr(start: nil, len: 0))
     }
 }
-
 public class RustVec<T: Vectorizable> {
     var ptr: UnsafeMutableRawPointer
     var isOwned: Bool = true

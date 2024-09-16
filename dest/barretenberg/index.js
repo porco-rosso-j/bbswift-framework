@@ -1,5 +1,5 @@
-import { BarretenbergApiSync } from '../barretenberg_api/index.js';
-export class BarretenbergSync extends BarretenbergApiSync {
+import { BarretenbergApi } from '../barretenberg_api/index.js';
+export class BarretenbergSync {
     static async new() {
         return new BarretenbergSync();
     }
@@ -8,6 +8,11 @@ export class BarretenbergSync extends BarretenbergApiSync {
     }
     static getSingleton() {
         return BarretenbergSync.new();
+    }
+}
+export class Barretenberg extends BarretenbergApi {
+    static new() {
+        return new Barretenberg();
     }
 }
 //# sourceMappingURL=index.js.map

@@ -1,10 +1,10 @@
-import { BarretenbergApiSync } from '../barretenberg_api/index.js';
+import { BarretenbergApi } from '../barretenberg_api/index.js';
 export type BackendOptions = {
   threads?: number,
   memory?: { initial?: number, maximum?: number }
 };
 
-export class BarretenbergSync extends BarretenbergApiSync {
+export class BarretenbergSync {
   static async new() {
     return new BarretenbergSync();
   }
@@ -15,5 +15,11 @@ export class BarretenbergSync extends BarretenbergApiSync {
 
   static getSingleton() {
     return BarretenbergSync.new();
+  }
+}
+
+export class Barretenberg extends BarretenbergApi {
+  static new() {
+    return new Barretenberg();
   }
 }

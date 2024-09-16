@@ -11,282 +11,346 @@ import {
 } from '../serialize/index.js';
 import { Fr, Fq, Point, Buffer32, Buffer128, Ptr } from '../types/index.js';
 import { NativeModules } from 'react-native';
-const { BBSwift } = NativeModules;
+const { BBSwiftModule } = NativeModules;
 
-export class BarretenbergApiSync {
-  pedersenCommit(inputsBuffer: Fr[]): Point {
-    const inArgs = inputsBuffer.map(serializeBufferable);
-
-    const resultArray = BBSwift.pedersenCommit(inArgs);
-
-    if (!resultArray) {
+/*
+[TypeError: undefined is not an object (evaluating '(0, _$$_REQUIRE(_dependencyMap[9], "tslib").__classPrivateFieldGet)(_this, _EntrypointPayload_packedArguments, "f")[index].hash')]
+*/
+export class BarretenbergApi {
+  async pedersenCommit(inputsBuffer: Fr[]): Promise<Point> {
+    console.log('pedersenCommit called');
+    console.log('inputsBuffer: ', inputsBuffer);
+    const initArgs = inputsBuffer.flatMap(f => Array.from(f.toBuffer()));
+    console.log('initArgs: ', initArgs);
+    const resultBuffer = await BBSwiftModule.pedersenCommit(initArgs);
+    console.log('resultBuffer: ', resultBuffer);
+    if (!resultBuffer) {
       throw new Error('pedersenCommit returned null or encountered an error');
     }
-
-    const resultBuffer = Buffer.from(resultArray);
-
     return Point.fromBuffer(resultBuffer);
   }
 
-  pedersenHash(inputsBuffer: Fr[], hashIndex: number): Fr {
-    const inArgs = [inputsBuffer].map(serializeBufferable);
-    const resultBuffer = BBSwift.pedersenHash(inArgs);
-
+  async pedersenHash(inputsBuffer: Fr[], hashIndex: number): Promise<Fr> {
+    console.log('pedersenHash called');
+    console.log('inputsBuffer: ', inputsBuffer);
+    const initArgs = inputsBuffer.flatMap(f => Array.from(f.toBuffer()));
+    console.log('initArgs: ', initArgs);
+    const resultBuffer = await BBSwiftModule.pedersenHash(initArgs, hashIndex);
+    console.log('resultBuffer: ', resultBuffer);
     if (!resultBuffer) {
-      throw new Error('pedersenHash returned null');
+      throw new Error('pedersenHash returned null or encountered an error');
     }
-
     return Fr.fromBuffer(resultBuffer);
   }
 
-  pedersenHashes(inputsBuffer: Fr[], hashIndex: number): Fr {
+  async poseidon2Hash(inputsBuffer: Fr[]): Promise<Fr> {
+    console.log('poseidon2Hash called');
+    console.log('inputsBuffer: ', inputsBuffer);
+    const initArgs = inputsBuffer.flatMap(f => Array.from(f.toBuffer()));
+    console.log('initArgs: ', initArgs);
+    const resultBuffer = await BBSwiftModule.poseidon2Hash(initArgs);
+    console.log('resultBuffer: ', resultBuffer);
+    if (!resultBuffer) {
+      throw new Error('poseidon2Hash returned null or encountered an error');
+    }
+    return Fr.fromBuffer(resultBuffer);
+  }
+
+  async eccGrumpkinMul(pointBuf: Buffer, scalarBuf: Buffer): Promise<Buffer> {
+    console.log('eccGrumpkinMul called');
+    console.log('pointBuf: ', pointBuf);
+    console.log('scalarBuf: ', scalarBuf);
+
+    const resultBuffer = await BBSwiftModule.eccGrumpkinMul(
+      Array.from(pointBuf),
+      Array.from(scalarBuf)
+    );
+    console.log('resultBuffer: ', resultBuffer);
+    if (!resultBuffer) {
+      throw new Error('eccGrumpkinMul returned null or encountered an error');
+    }
+    // return Point.fromBuffer(resultBuffer);
+    return resultBuffer;
+  }
+
+  async eccGrumpkinAdd(pointABuf: Buffer, pointBBuf: Buffer): Promise<Buffer> {
+    console.log('eccGrumpkinAdd called');
+    console.log('pointABuf: ', pointABuf);
+    console.log('pointBBuf: ', pointBBuf);
+    const resultBuffer = await BBSwiftModule.eccGrumpkinAdd(
+      Array.from(pointABuf),
+      Array.from(pointBBuf)
+    );
+    console.log('resultBuffer: ', resultBuffer);
+    if (!resultBuffer) {
+      throw new Error('eccGrumpkinAdd returned null or encountered an error');
+    }
+    return resultBuffer;
+  }
+  async pedersenHashes(inputsBuffer: Fr[], hashIndex: number): Promise<Fr> {
     throw new Error('pedersenHashes not supported');
   }
 
-  pedersenHashBuffer(inputBuffer: Uint8Array, hashIndex: number): Fr {
+  async pedersenHashBuffer(
+    inputBuffer: Uint8Array,
+    hashIndex: number
+  ): Promise<Fr> {
     throw new Error('pedersenHashBuffer not supported');
   }
 
-  poseidon2Hash(inputsBuffer: Fr[]): Fr {
-    const inArgs = [inputsBuffer].map(serializeBufferable);
-    const resultBuffer = BBSwift.poseidon2Hash(inArgs);
-
-    if (!resultBuffer) {
-      throw new Error('poseidon2Hash returned null');
-    }
-
-    return Fr.fromBuffer(resultBuffer);
-  }
-
-  poseidon2Hashes(inputsBuffer: Fr[]): Fr {
+  async poseidon2Hashes(inputsBuffer: Fr[]): Promise<Fr> {
     throw new Error('poseidon2Hashes not supported');
   }
 
-  poseidon2Permutation(inputsBuffer: Fr[]): Fr[] {
+  async poseidon2Permutation(inputsBuffer: Fr[]): Promise<Fr[]> {
     throw new Error('poseidon2Permutation not supported');
   }
 
-  blake2s(data: Uint8Array): Buffer32 {
+  async blake2s(data: Uint8Array): Promise<Buffer32> {
     throw new Error('blake2s not supported');
   }
 
-  blake2sToField(data: Uint8Array): Fr {
+  async blake2sToField(data: Uint8Array): Promise<Fr> {
     throw new Error('blake2sToField not supported');
   }
 
-  schnorrComputePublicKey(privateKey: Fr): Point {
+  async schnorrComputePublicKey(privateKey: Fr): Promise<Point> {
     throw new Error('schnorrComputePublicKey not supported');
   }
 
-  schnorrNegatePublicKey(publicKeyBuffer: Point): Point {
+  async schnorrNegatePublicKey(publicKeyBuffer: Point): Promise<Point> {
     throw new Error('schnorrNegatePublicKey not supported');
   }
 
-  schnorrConstructSignature(
+  async schnorrConstructSignature(
     message: Uint8Array,
     privateKey: Fr
-  ): [Buffer32, Buffer32] {
+  ): Promise<[Buffer32, Buffer32]> {
     throw new Error('schnorrConstructSignature not supported');
   }
 
-  schnorrVerifySignature(
+  async schnorrVerifySignature(
     message: Uint8Array,
     pubKey: Point,
     sigS: Buffer32,
     sigE: Buffer32
-  ): boolean {
+  ): Promise<boolean> {
     throw new Error('schnorrVerifySignature not supported');
   }
 
-  schnorrMultisigCreateMultisigPublicKey(privateKey: Fq): Buffer128 {
+  async schnorrMultisigCreateMultisigPublicKey(
+    privateKey: Fq
+  ): Promise<Buffer128> {
     throw new Error('schnorrMultisigCreateMultisigPublicKey not supported');
   }
 
-  schnorrMultisigValidateAndCombineSignerPubkeys(
+  async schnorrMultisigValidateAndCombineSignerPubkeys(
     signerPubkeyBuf: Buffer128[]
-  ): [Point, boolean] {
+  ): Promise<[Point, boolean]> {
     throw new Error(
       'schnorrMultisigValidateAndCombineSignerPubkeys not supported'
     );
   }
 
-  schnorrMultisigConstructSignatureRound1(): [Buffer128, Buffer128] {
+  async schnorrMultisigConstructSignatureRound1(): Promise<
+    [Buffer128, Buffer128]
+  > {
     throw new Error('schnorrMultisigConstructSignatureRound1 not supported');
   }
 
-  schnorrMultisigConstructSignatureRound2(
+  async schnorrMultisigConstructSignatureRound2(
     message: Uint8Array,
     privateKey: Fq,
     signerRoundOnePrivateBuf: Buffer128,
     signerPubkeysBuf: Buffer128[],
     roundOnePublicBuf: Buffer128[]
-  ): [Fq, boolean] {
+  ): Promise<[Fq, boolean]> {
     throw new Error('schnorrMultisigConstructSignatureRound2 not supported');
   }
 
-  schnorrMultisigCombineSignatures(
+  async schnorrMultisigCombineSignatures(
     message: Uint8Array,
     signerPubkeysBuf: Buffer128[],
     roundOneBuf: Buffer128[],
     roundTwoBuf: Fq[]
-  ): [Buffer32, Buffer32, boolean] {
+  ): Promise<[Buffer32, Buffer32, boolean]> {
     throw new Error('schnorrMultisigCombineSignatures not supported');
   }
 
-  aesEncryptBufferCbc(
+  async aesEncryptBufferCbc(
     input: Uint8Array,
     iv: Uint8Array,
     key: Uint8Array,
     length: number
-  ): Uint8Array {
+  ): Promise<Uint8Array> {
     throw new Error('aesEncryptBufferCbc not supported');
   }
 
-  aesDecryptBufferCbc(
+  async aesDecryptBufferCbc(
     input: Uint8Array,
     iv: Uint8Array,
     key: Uint8Array,
     length: number
-  ): Uint8Array {
+  ): Promise<Uint8Array> {
     throw new Error('aesDecryptBufferCbc not supported');
   }
 
-  srsInitSrs(
+  async srsInitSrs(
     pointsBuf: Uint8Array,
     numPoints: number,
     g2PointBuf: Uint8Array
-  ): void {
+  ): Promise<void> {
     throw new Error('srsInitSrs not supported');
   }
 
-  srsInitGrumpkinSrs(pointsBuf: Uint8Array, numPoints: number): void {
+  async srsInitGrumpkinSrs(
+    pointsBuf: Uint8Array,
+    numPoints: number
+  ): Promise<void> {
     throw new Error('srsInitGrumpkinSrs not supported');
   }
 
-  examplesSimpleCreateAndVerifyProof(): boolean {
+  async examplesSimpleCreateAndVerifyProof(): Promise<boolean> {
     throw new Error('examplesSimpleCreateAndVerifyProof not supported');
   }
 
-  testThreads(threads: number, iterations: number): number {
+  async testThreads(threads: number, iterations: number): Promise<number> {
     throw new Error('testThreads not supported');
   }
 
-  commonInitSlabAllocator(circuitSize: number): void {
+  async commonInitSlabAllocator(circuitSize: number): Promise<void> {
     throw new Error('commonInitSlabAllocator not supported');
   }
 
-  acirGetCircuitSizes(
+  async acirGetCircuitSizes(
     constraintSystemBuf: Uint8Array,
     honkRecursion: boolean
-  ): [number, number, number] {
+  ): Promise<[number, number, number]> {
     throw new Error('acirGetCircuitSizes not supported');
   }
 
-  acirNewAcirComposer(sizeHint: number): Ptr {
+  async acirNewAcirComposer(sizeHint: number): Promise<Ptr> {
     throw new Error('acirNewAcirComposer not supported');
   }
 
-  acirDeleteAcirComposer(acirComposerPtr: Ptr): void {
+  async acirDeleteAcirComposer(acirComposerPtr: Ptr): Promise<void> {
     throw new Error('acirDeleteAcirComposer not supported');
   }
 
-  acirCreateCircuit(
+  async acirCreateCircuit(
     acirComposerPtr: Ptr,
     constraintSystemBuf: Uint8Array,
     sizeHint: number
-  ): void {
+  ): Promise<void> {
     throw new Error('acirCreateCircuit not supported');
   }
 
-  acirInitProvingKey(
+  async acirInitProvingKey(
     acirComposerPtr: Ptr,
     constraintSystemBuf: Uint8Array
-  ): void {
+  ): Promise<void> {
     throw new Error('acirInitProvingKey not supported');
   }
 
-  acirCreateProof(
+  async acirCreateProof(
     acirComposerPtr: Ptr,
     constraintSystemBuf: Uint8Array,
     witnessBuf: Uint8Array
-  ): Uint8Array {
+  ): Promise<Uint8Array> {
     throw new Error('acirCreateProof not supported');
   }
 
-  acirProveAndVerifyUltraHonk(
+  async acirProveAndVerifyUltraHonk(
     constraintSystemBuf: Uint8Array,
     witnessBuf: Uint8Array
-  ): boolean {
+  ): Promise<boolean> {
     throw new Error('acirProveAndVerifyUltraHonk not supported');
   }
 
-  acirProveAndVerifyMegaHonk(
+  async acirProveAndVerifyMegaHonk(
     constraintSystemBuf: Uint8Array,
     witnessBuf: Uint8Array
-  ): boolean {
+  ): Promise<boolean> {
     throw new Error('acirProveAndVerifyMegaHonk not supported');
   }
 
-  acirFoldAndVerifyProgramStack(
+  async acirFoldAndVerifyProgramStack(
     constraintSystemBuf: Uint8Array,
     witnessBuf: Uint8Array
-  ): boolean {
+  ): Promise<boolean> {
     throw new Error('acirFoldAndVerifyProgramStack not supported');
   }
 
-  acirLoadVerificationKey(acirComposerPtr: Ptr, vkBuf: Uint8Array): void {
+  async acirLoadVerificationKey(
+    acirComposerPtr: Ptr,
+    vkBuf: Uint8Array
+  ): Promise<void> {
     throw new Error('acirLoadVerificationKey not supported');
   }
 
-  acirInitVerificationKey(acirComposerPtr: Ptr): void {
+  async acirInitVerificationKey(acirComposerPtr: Ptr): Promise<void> {
     throw new Error('acirInitVerificationKey not supported');
   }
 
-  acirGetVerificationKey(acirComposerPtr: Ptr): Uint8Array {
+  async acirGetVerificationKey(acirComposerPtr: Ptr): Promise<Uint8Array> {
     throw new Error('acirGetVerificationKey not supported');
   }
 
-  acirGetProvingKey(acirComposerPtr: Ptr, acirVec: Uint8Array): Uint8Array {
+  async acirGetProvingKey(
+    acirComposerPtr: Ptr,
+    acirVec: Uint8Array
+  ): Promise<Uint8Array> {
     throw new Error('acirGetProvingKey not supported');
   }
 
-  acirVerifyProof(acirComposerPtr: Ptr, proofBuf: Uint8Array): boolean {
+  async acirVerifyProof(
+    acirComposerPtr: Ptr,
+    proofBuf: Uint8Array
+  ): Promise<boolean> {
     throw new Error('acirVerifyProof not supported');
   }
 
-  acirGetSolidityVerifier(acirComposerPtr: Ptr): string {
+  async acirGetSolidityVerifier(acirComposerPtr: Ptr): Promise<string> {
     throw new Error('acirGetSolidityVerifier not supported');
   }
 
-  acirSerializeProofIntoFields(
+  async acirSerializeProofIntoFields(
     acirComposerPtr: Ptr,
     proofBuf: Uint8Array,
     numInnerPublicInputs: number
-  ): Fr[] {
+  ): Promise<Fr[]> {
     throw new Error('acirSerializeProofIntoFields not supported');
   }
 
-  acirSerializeVerificationKeyIntoFields(acirComposerPtr: Ptr): [Fr[], Fr] {
+  async acirSerializeVerificationKeyIntoFields(
+    acirComposerPtr: Ptr
+  ): Promise<[Fr[], Fr]> {
     throw new Error('acirSerializeVerificationKeyIntoFields not supported');
   }
 
-  acirProveUltraHonk(acirVec: Uint8Array, witnessVec: Uint8Array): Uint8Array {
+  async acirProveUltraHonk(
+    acirVec: Uint8Array,
+    witnessVec: Uint8Array
+  ): Promise<Uint8Array> {
     throw new Error('acirProveUltraHonk not supported');
   }
 
-  acirVerifyUltraHonk(proofBuf: Uint8Array, vkBuf: Uint8Array): boolean {
+  async acirVerifyUltraHonk(
+    proofBuf: Uint8Array,
+    vkBuf: Uint8Array
+  ): Promise<boolean> {
     throw new Error('acirVerifyUltraHonk not supported');
   }
 
-  acirWriteVkUltraHonk(acirVec: Uint8Array): Uint8Array {
+  async acirWriteVkUltraHonk(acirVec: Uint8Array): Promise<Uint8Array> {
     throw new Error('acirWriteVkUltraHonk not supported');
   }
 
-  acirProofAsFieldsUltraHonk(proofBuf: Uint8Array): Fr[] {
+  async acirProofAsFieldsUltraHonk(proofBuf: Uint8Array): Promise<Fr[]> {
     throw new Error('acirProofAsFieldsUltraHonk not supported');
   }
 
-  acirVkAsFieldsUltraHonk(vkBuf: Uint8Array): Fr[] {
+  async acirVkAsFieldsUltraHonk(vkBuf: Uint8Array): Promise<Fr[]> {
     throw new Error('acirVkAsFieldsUltraHonk not supported');
   }
 }

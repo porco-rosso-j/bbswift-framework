@@ -3,8 +3,8 @@ import BBSwiftLib
 public func pedersen_commit_swift(_ inputs: UnsafeBufferPointer<UInt8>) -> RustVec<UInt8> {
     RustVec(ptr: __swift_bridge__$pedersen_commit_swift(inputs.toFfiSlice()))
 }
-public func pedersen_hash_swift(_ inputs: UnsafeBufferPointer<UInt8>) -> RustVec<UInt8> {
-    RustVec(ptr: __swift_bridge__$pedersen_hash_swift(inputs.toFfiSlice()))
+public func pedersen_hash_swift(_ inputs: UnsafeBufferPointer<UInt8>, _ index: UInt32) -> RustVec<UInt8> {
+    RustVec(ptr: __swift_bridge__$pedersen_hash_swift(inputs.toFfiSlice(), index))
 }
 public func poseidon2_hash_swift(_ inputs: UnsafeBufferPointer<UInt8>) -> RustVec<UInt8> {
     RustVec(ptr: __swift_bridge__$poseidon2_hash_swift(inputs.toFfiSlice()))
