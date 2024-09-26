@@ -1,4 +1,4 @@
-import { Fr, Fq, Point, Buffer32, Buffer128, Ptr } from '../types/index.js';
+import { Fr, Fq, Point, Buffer32, Buffer128, Ptr } from "../types/index.js";
 export declare class BarretenbergApi {
     pedersenCommit(inputsBuffer: Fr[]): Promise<Point>;
     pedersenHash(inputsBuffer: Fr[], hashIndex: number): Promise<Fr>;

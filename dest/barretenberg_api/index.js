@@ -1,197 +1,200 @@
-import { Fr, Point } from '../types/index.js';
-import { NativeModules } from 'react-native';
+import { Fr, Point } from "../types/index.js";
+import { NativeModules } from "react-native";
 const { BBSwiftModule } = NativeModules;
+/*
+[TypeError: undefined is not an object (evaluating '(0, _$$_REQUIRE(_dependencyMap[9], "tslib").__classPrivateFieldGet)(_this, _EntrypointPayload_packedArguments, "f")[index].hash')]
+*/
 export class BarretenbergApi {
     async pedersenCommit(inputsBuffer) {
-        console.log('pedersenCommit called');
-        console.log('inputsBuffer: ', inputsBuffer);
-        const initArgs = inputsBuffer.flatMap(f => Array.from(f.toBuffer()));
-        console.log('initArgs: ', initArgs);
+        // console.log("pedersenCommit called");
+        // console.log('inputsBuffer: ', inputsBuffer);
+        const initArgs = inputsBuffer.flatMap((f) => Array.from(f.toBuffer()));
+        // console.log('initArgs: ', initArgs);
         const resultBuffer = await BBSwiftModule.pedersenCommit(initArgs);
-        console.log('resultBuffer: ', resultBuffer);
+        // console.log('resultBuffer: ', resultBuffer);
         if (!resultBuffer) {
-            throw new Error('pedersenCommit returned null or encountered an error');
+            throw new Error("pedersenCommit returned null or encountered an error");
         }
         return Point.fromBuffer(resultBuffer);
     }
     async pedersenHash(inputsBuffer, hashIndex) {
-        console.log('pedersenHash called');
-        console.log('inputsBuffer: ', inputsBuffer);
-        const initArgs = inputsBuffer.flatMap(f => Array.from(f.toBuffer()));
-        console.log('initArgs: ', initArgs);
+        // console.log("pedersenHash called");
+        // console.log('inputsBuffer: ', inputsBuffer);
+        const initArgs = inputsBuffer.flatMap((f) => Array.from(f.toBuffer()));
+        // console.log('initArgs: ', initArgs);
         const resultBuffer = await BBSwiftModule.pedersenHash(initArgs, hashIndex);
-        console.log('resultBuffer: ', resultBuffer);
+        // console.log('resultBuffer: ', resultBuffer);
         if (!resultBuffer) {
-            throw new Error('pedersenHash returned null or encountered an error');
+            throw new Error("pedersenHash returned null or encountered an error");
         }
         return Fr.fromBuffer(resultBuffer);
     }
     async poseidon2Hash(inputsBuffer) {
-        console.log('poseidon2Hash called');
-        console.log('inputsBuffer: ', inputsBuffer);
-        const initArgs = inputsBuffer.flatMap(f => Array.from(f.toBuffer()));
-        console.log('initArgs: ', initArgs);
+        // console.log("poseidon2Hash called");
+        // console.log('inputsBuffer: ', inputsBuffer);
+        const initArgs = inputsBuffer.flatMap((f) => Array.from(f.toBuffer()));
+        // console.log('initArgs: ', initArgs);
         const resultBuffer = await BBSwiftModule.poseidon2Hash(initArgs);
-        console.log('resultBuffer: ', resultBuffer);
+        // console.log('resultBuffer: ', resultBuffer);
         if (!resultBuffer) {
-            throw new Error('poseidon2Hash returned null or encountered an error');
+            throw new Error("poseidon2Hash returned null or encountered an error");
         }
         return Fr.fromBuffer(resultBuffer);
     }
     async eccGrumpkinMul(pointBuf, scalarBuf) {
-        console.log('eccGrumpkinMul called');
-        console.log('pointBuf: ', pointBuf);
-        console.log('scalarBuf: ', scalarBuf);
+        // console.log("eccGrumpkinMul called");
+        // console.log("pointBuf: ", pointBuf);
+        // console.log("scalarBuf: ", scalarBuf);
         const resultBuffer = await BBSwiftModule.eccGrumpkinMul(Array.from(pointBuf), Array.from(scalarBuf));
-        console.log('resultBuffer: ', resultBuffer);
+        // console.log("resultBuffer: ", resultBuffer);
         if (!resultBuffer) {
-            throw new Error('eccGrumpkinMul returned null or encountered an error');
+            throw new Error("eccGrumpkinMul returned null or encountered an error");
         }
         // return Point.fromBuffer(resultBuffer);
-        return resultBuffer;
+        return Buffer.from(resultBuffer);
     }
     async eccGrumpkinAdd(pointABuf, pointBBuf) {
-        console.log('eccGrumpkinAdd called');
-        console.log('pointABuf: ', pointABuf);
-        console.log('pointBBuf: ', pointBBuf);
+        // console.log("eccGrumpkinAdd called");
+        // console.log("pointABuf: ", pointABuf);
+        // console.log("pointBBuf: ", pointBBuf);
         const resultBuffer = await BBSwiftModule.eccGrumpkinAdd(Array.from(pointABuf), Array.from(pointBBuf));
-        console.log('resultBuffer: ', resultBuffer);
+        // console.log("resultBuffer: ", resultBuffer);
         if (!resultBuffer) {
-            throw new Error('eccGrumpkinAdd returned null or encountered an error');
+            throw new Error("eccGrumpkinAdd returned null or encountered an error");
         }
-        return resultBuffer;
+        return Buffer.from(resultBuffer);
     }
     async pedersenHashes(inputsBuffer, hashIndex) {
-        throw new Error('pedersenHashes not supported');
+        throw new Error("pedersenHashes not supported");
     }
     async pedersenHashBuffer(inputBuffer, hashIndex) {
-        throw new Error('pedersenHashBuffer not supported');
+        throw new Error("pedersenHashBuffer not supported");
     }
     async poseidon2Hashes(inputsBuffer) {
-        throw new Error('poseidon2Hashes not supported');
+        throw new Error("poseidon2Hashes not supported");
     }
     async poseidon2Permutation(inputsBuffer) {
-        throw new Error('poseidon2Permutation not supported');
+        throw new Error("poseidon2Permutation not supported");
     }
     async blake2s(data) {
-        throw new Error('blake2s not supported');
+        throw new Error("blake2s not supported");
     }
     async blake2sToField(data) {
-        throw new Error('blake2sToField not supported');
+        throw new Error("blake2sToField not supported");
     }
     async schnorrComputePublicKey(privateKey) {
-        throw new Error('schnorrComputePublicKey not supported');
+        throw new Error("schnorrComputePublicKey not supported");
     }
     async schnorrNegatePublicKey(publicKeyBuffer) {
-        throw new Error('schnorrNegatePublicKey not supported');
+        throw new Error("schnorrNegatePublicKey not supported");
     }
     async schnorrConstructSignature(message, privateKey) {
-        throw new Error('schnorrConstructSignature not supported');
+        throw new Error("schnorrConstructSignature not supported");
     }
     async schnorrVerifySignature(message, pubKey, sigS, sigE) {
-        throw new Error('schnorrVerifySignature not supported');
+        throw new Error("schnorrVerifySignature not supported");
     }
     async schnorrMultisigCreateMultisigPublicKey(privateKey) {
-        throw new Error('schnorrMultisigCreateMultisigPublicKey not supported');
+        throw new Error("schnorrMultisigCreateMultisigPublicKey not supported");
     }
     async schnorrMultisigValidateAndCombineSignerPubkeys(signerPubkeyBuf) {
-        throw new Error('schnorrMultisigValidateAndCombineSignerPubkeys not supported');
+        throw new Error("schnorrMultisigValidateAndCombineSignerPubkeys not supported");
     }
     async schnorrMultisigConstructSignatureRound1() {
-        throw new Error('schnorrMultisigConstructSignatureRound1 not supported');
+        throw new Error("schnorrMultisigConstructSignatureRound1 not supported");
     }
     async schnorrMultisigConstructSignatureRound2(message, privateKey, signerRoundOnePrivateBuf, signerPubkeysBuf, roundOnePublicBuf) {
-        throw new Error('schnorrMultisigConstructSignatureRound2 not supported');
+        throw new Error("schnorrMultisigConstructSignatureRound2 not supported");
     }
     async schnorrMultisigCombineSignatures(message, signerPubkeysBuf, roundOneBuf, roundTwoBuf) {
-        throw new Error('schnorrMultisigCombineSignatures not supported');
+        throw new Error("schnorrMultisigCombineSignatures not supported");
     }
     async aesEncryptBufferCbc(input, iv, key, length) {
-        throw new Error('aesEncryptBufferCbc not supported');
+        throw new Error("aesEncryptBufferCbc not supported");
     }
     async aesDecryptBufferCbc(input, iv, key, length) {
-        throw new Error('aesDecryptBufferCbc not supported');
+        throw new Error("aesDecryptBufferCbc not supported");
     }
     async srsInitSrs(pointsBuf, numPoints, g2PointBuf) {
-        throw new Error('srsInitSrs not supported');
+        throw new Error("srsInitSrs not supported");
     }
     async srsInitGrumpkinSrs(pointsBuf, numPoints) {
-        throw new Error('srsInitGrumpkinSrs not supported');
+        throw new Error("srsInitGrumpkinSrs not supported");
     }
     async examplesSimpleCreateAndVerifyProof() {
-        throw new Error('examplesSimpleCreateAndVerifyProof not supported');
+        throw new Error("examplesSimpleCreateAndVerifyProof not supported");
     }
     async testThreads(threads, iterations) {
-        throw new Error('testThreads not supported');
+        throw new Error("testThreads not supported");
     }
     async commonInitSlabAllocator(circuitSize) {
-        throw new Error('commonInitSlabAllocator not supported');
+        throw new Error("commonInitSlabAllocator not supported");
     }
     async acirGetCircuitSizes(constraintSystemBuf, honkRecursion) {
-        throw new Error('acirGetCircuitSizes not supported');
+        throw new Error("acirGetCircuitSizes not supported");
     }
     async acirNewAcirComposer(sizeHint) {
-        throw new Error('acirNewAcirComposer not supported');
+        throw new Error("acirNewAcirComposer not supported");
     }
     async acirDeleteAcirComposer(acirComposerPtr) {
-        throw new Error('acirDeleteAcirComposer not supported');
+        throw new Error("acirDeleteAcirComposer not supported");
     }
     async acirCreateCircuit(acirComposerPtr, constraintSystemBuf, sizeHint) {
-        throw new Error('acirCreateCircuit not supported');
+        throw new Error("acirCreateCircuit not supported");
     }
     async acirInitProvingKey(acirComposerPtr, constraintSystemBuf) {
-        throw new Error('acirInitProvingKey not supported');
+        throw new Error("acirInitProvingKey not supported");
     }
     async acirCreateProof(acirComposerPtr, constraintSystemBuf, witnessBuf) {
-        throw new Error('acirCreateProof not supported');
+        throw new Error("acirCreateProof not supported");
     }
     async acirProveAndVerifyUltraHonk(constraintSystemBuf, witnessBuf) {
-        throw new Error('acirProveAndVerifyUltraHonk not supported');
+        throw new Error("acirProveAndVerifyUltraHonk not supported");
     }
     async acirProveAndVerifyMegaHonk(constraintSystemBuf, witnessBuf) {
-        throw new Error('acirProveAndVerifyMegaHonk not supported');
+        throw new Error("acirProveAndVerifyMegaHonk not supported");
     }
     async acirFoldAndVerifyProgramStack(constraintSystemBuf, witnessBuf) {
-        throw new Error('acirFoldAndVerifyProgramStack not supported');
+        throw new Error("acirFoldAndVerifyProgramStack not supported");
     }
     async acirLoadVerificationKey(acirComposerPtr, vkBuf) {
-        throw new Error('acirLoadVerificationKey not supported');
+        throw new Error("acirLoadVerificationKey not supported");
     }
     async acirInitVerificationKey(acirComposerPtr) {
-        throw new Error('acirInitVerificationKey not supported');
+        throw new Error("acirInitVerificationKey not supported");
     }
     async acirGetVerificationKey(acirComposerPtr) {
-        throw new Error('acirGetVerificationKey not supported');
+        throw new Error("acirGetVerificationKey not supported");
     }
     async acirGetProvingKey(acirComposerPtr, acirVec) {
-        throw new Error('acirGetProvingKey not supported');
+        throw new Error("acirGetProvingKey not supported");
     }
     async acirVerifyProof(acirComposerPtr, proofBuf) {
-        throw new Error('acirVerifyProof not supported');
+        throw new Error("acirVerifyProof not supported");
     }
     async acirGetSolidityVerifier(acirComposerPtr) {
-        throw new Error('acirGetSolidityVerifier not supported');
+        throw new Error("acirGetSolidityVerifier not supported");
     }
     async acirSerializeProofIntoFields(acirComposerPtr, proofBuf, numInnerPublicInputs) {
-        throw new Error('acirSerializeProofIntoFields not supported');
+        throw new Error("acirSerializeProofIntoFields not supported");
     }
     async acirSerializeVerificationKeyIntoFields(acirComposerPtr) {
-        throw new Error('acirSerializeVerificationKeyIntoFields not supported');
+        throw new Error("acirSerializeVerificationKeyIntoFields not supported");
     }
     async acirProveUltraHonk(acirVec, witnessVec) {
-        throw new Error('acirProveUltraHonk not supported');
+        throw new Error("acirProveUltraHonk not supported");
     }
     async acirVerifyUltraHonk(proofBuf, vkBuf) {
-        throw new Error('acirVerifyUltraHonk not supported');
+        throw new Error("acirVerifyUltraHonk not supported");
     }
     async acirWriteVkUltraHonk(acirVec) {
-        throw new Error('acirWriteVkUltraHonk not supported');
+        throw new Error("acirWriteVkUltraHonk not supported");
     }
     async acirProofAsFieldsUltraHonk(proofBuf) {
-        throw new Error('acirProofAsFieldsUltraHonk not supported');
+        throw new Error("acirProofAsFieldsUltraHonk not supported");
     }
     async acirVkAsFieldsUltraHonk(vkBuf) {
-        throw new Error('acirVkAsFieldsUltraHonk not supported');
+        throw new Error("acirVkAsFieldsUltraHonk not supported");
     }
 }
 //# sourceMappingURL=index.js.map
